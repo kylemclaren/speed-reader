@@ -10,7 +10,6 @@ import {
   ProgressBar,
   SpeedControl,
   PlaybackControls,
-  RecentContext,
 } from '../components';
 import { ParsedContent } from '../utils/textParser';
 
@@ -25,7 +24,6 @@ export default function ReaderScreen() {
     content,
     currentWord,
     progress,
-    recentContext,
     setContent,
     togglePlayPause,
     next,
@@ -99,9 +97,6 @@ export default function ReaderScreen() {
           totalWords={content.wordCount}
           progress={progress}
         />
-
-        {/* Recent context */}
-        <RecentContext sentences={recentContext} />
       </View>
 
       {/* Controls */}

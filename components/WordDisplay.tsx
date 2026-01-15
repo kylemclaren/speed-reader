@@ -14,25 +14,36 @@ export function WordDisplay({ word }: WordDisplayProps) {
     <View style={styles.container}>
       {/* Guide lines */}
       <View style={styles.guideContainer}>
-        <View style={styles.guideLine} />
+        <View style={styles.guideLineLeft} />
         <View style={styles.centerMark} />
-        <View style={styles.guideLine} />
+        <View style={styles.guideLineRight} />
       </View>
 
-      {/* Word display */}
+      {/* Word display - focal letter anchored to center */}
       <View style={styles.wordContainer}>
-        <Text style={styles.wordText}>
-          <Text style={styles.normalText}>{before}</Text>
-          <Text style={styles.focalText}>{focal}</Text>
-          <Text style={styles.normalText}>{after}</Text>
-        </Text>
+        <View style={styles.wordRow}>
+          {/* Before: right-aligned, fixed width */}
+          <View style={styles.beforeContainer}>
+            <Text style={[styles.wordText, styles.normalText, styles.beforeText]}>
+              {before}
+            </Text>
+          </View>
+          {/* Focal letter: fixed position */}
+          <Text style={[styles.wordText, styles.focalText]}>{focal}</Text>
+          {/* After: left-aligned, fixed width */}
+          <View style={styles.afterContainer}>
+            <Text style={[styles.wordText, styles.normalText, styles.afterText]}>
+              {after}
+            </Text>
+          </View>
+        </View>
       </View>
 
       {/* Bottom guide lines */}
       <View style={styles.guideContainer}>
-        <View style={styles.guideLine} />
+        <View style={styles.guideLineLeft} />
         <View style={styles.centerMark} />
-        <View style={styles.guideLine} />
+        <View style={styles.guideLineRight} />
       </View>
     </View>
   );
@@ -50,8 +61,13 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: theme.spacing.lg,
   },
-  guideLine: {
+  guideLineLeft: {
     flex: 1,
+    height: 1,
+    backgroundColor: theme.colors.border,
+  },
+  guideLineRight: {
+    flex: 2,
     height: 1,
     backgroundColor: theme.colors.border,
   },
@@ -66,6 +82,27 @@ const styles = StyleSheet.create({
     minHeight: 120,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+  },
+  wordRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: theme.spacing.lg,
+  },
+  beforeContainer: {
+    width: '33%',
+    alignItems: 'flex-end',
+  },
+  afterContainer: {
+    width: '62%',
+    alignItems: 'flex-start',
+  },
+  beforeText: {
+    textAlign: 'right',
+  },
+  afterText: {
+    textAlign: 'left',
   },
   wordText: {
     fontSize: theme.fontSize.word,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { theme } from '../constants/theme';
 
@@ -35,19 +35,36 @@ export function RecentContext({ sentences }: RecentContextProps) {
       </Pressable>
 
       {isExpanded && (
-        <View style={styles.contextContainer}>
-          {sentences.map((sentence, index) => (
-            <Text
-              key={index}
-              style={[
-                styles.sentenceText,
-                index === sentences.length - 1 && styles.currentSentence,
-              ]}
-            >
-              {sentence}
-            </Text>
-          ))}
-        </View>
+        <ScrollView
+          style={styles.contextContainer}
+          contentContainerStyle={styles.contextContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {sentences.map((sentence, index) => {
+            const isCurrentSentence = index === sentences.length - 1;
+            const opacity = isCurrentSentence ? 1 : 0.5 + (index / sentences.length) * 0.3;
+
+            return (
+              <View
+                key={index}
+                style={[
+                  styles.sentenceRow,
+                  isCurrentSentence && styles.currentSentenceRow,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.sentenceText,
+                    isCurrentSentence && styles.currentSentenceText,
+                    { opacity },
+                  ]}
+                >
+                  {sentence}
+                </Text>
+              </View>
+            );
+          })}
+        </ScrollView>
       )}
     </View>
   );
@@ -78,17 +95,31 @@ const styles = StyleSheet.create({
   },
   contextContainer: {
     marginTop: theme.spacing.md,
-    padding: theme.spacing.md,
+    maxHeight: 180,
     backgroundColor: theme.colors.surface,
     borderRadius: theme.borderRadius.md,
+  },
+  contextContent: {
+    overflow: 'hidden',
+    borderRadius: theme.borderRadius.md,
+  },
+  sentenceRow: {
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
+    borderLeftWidth: 3,
+    borderLeftColor: 'transparent',
+  },
+  currentSentenceRow: {
+    backgroundColor: theme.colors.surfaceLight,
+    borderLeftColor: theme.colors.accent,
   },
   sentenceText: {
     color: theme.colors.textMuted,
     fontSize: theme.fontSize.sm,
-    lineHeight: 20,
-    marginBottom: theme.spacing.xs,
+    lineHeight: 22,
   },
-  currentSentence: {
-    color: theme.colors.textSecondary,
+  currentSentenceText: {
+    color: theme.colors.text,
+    fontWeight: '500',
   },
 });
